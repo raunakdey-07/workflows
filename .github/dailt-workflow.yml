@@ -1,0 +1,31 @@
+name: Daily Commit
+
+# Trigger schedule: Runs daily at 11:30 AM UTC
+on:
+  schedule:
+    - cron: "30 11 * * *"
+
+jobs:
+  daily-commit-job:
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Check out the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Modify a file (e.g., add current date to a file)
+      - name: Update date in file
+        run: echo "Last run on $(date)" > last_run.txt
+
+      # Step 3: Configure Git user details
+      - name: Set Git user details (22f3002175@ds.study.iitm.ac.in)
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "22f3002175@ds.study.iitm.ac.in"
+
+      # Step 4: Commit and push changes
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Daily update - $(date)"
+          branch: main # Replace 'main' with your default branch if different
