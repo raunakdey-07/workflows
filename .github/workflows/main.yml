@@ -1,26 +1,32 @@
-
-
 name: Daily Commit
 
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: "30 12 * * *" # Adjust this to your desired time
+  workflow_dispatch:       # Allows manual trigger for testing
 
 jobs:
-  commit:
+  daily-commit-job:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write  # Ensure this line is added
 
     steps:
+      # Step 1: Check out the repository
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Make changes
+      # Step 2: Modify a file (e.g., update a timestamp)
+      - name: Update timestamp in file
+        run: echo "Last run on $(date)" > last_run.txt
+
+      # Step 3: Configure Git user details
+      - name: Set Git user details (22f3002175@ds.study.iitm.ac.in)
         run: |
-          # Your command to make changes
+          git config user.name "GitHub Actions Bot"
+          git config user.email "22f3002175@ds.study.iitm.ac.in"
 
-      - name: Commit changes
+      # Step 4: Commit and push changes
+      - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: Commit message
+          commit_message: "Daily update - $(date)"
+          branch: main # Replace 'main' with your default branch
