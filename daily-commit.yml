@@ -1,9 +1,10 @@
 name: Daily Commit
 
-# Trigger the workflow daily at 11:30 AM UTC (adjust as needed)
+# Trigger the workflow daily
 on:
   schedule:
-    - cron: "30 11 * * *"
+    - cron: "30 16 * * *"
+  workflow_dispatch:
 
 jobs:
   daily-commit-job:
